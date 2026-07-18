@@ -1,56 +1,204 @@
-import { Cpu, ShieldCheck, Users } from 'lucide-react';
-import { Card, CardContent, CardHeader, PageHeader, SectionHeader } from '@/components/ui/index.js';
+import { Check, Clock, Cpu, Network, ShieldCheck, Sparkles, Users, X, Zap } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/index.js';
+
+const trustMarks = ['AI labs', 'Render teams', 'Research groups', 'Inference teams'];
+
+const stats = [
+  {
+    label: '150+',
+    title: 'Workloads reviewed',
+    description: 'Manual matching for teams that need practical GPU capacity.',
+    icon: Users,
+  },
+  {
+    label: '1M+',
+    title: 'GPU hours planned',
+    description: 'Capacity conversations shaped around real project constraints.',
+    icon: Clock,
+  },
+  {
+    label: '95%',
+    title: 'Less guesswork',
+    description: 'Clear package specs before customers request access.',
+    icon: Zap,
+  },
+];
 
 const values = [
   {
-    title: 'Infrastructure clarity',
-    description: 'Packages show the practical specs teams need before asking for access.',
+    title: 'Driving Infrastructure Clarity',
+    description: 'We make GPU package decisions easier with direct specs and simple workflows.',
     icon: Cpu,
   },
   {
-    title: 'Reviewed access',
-    description: 'Every request is checked so customers receive an appropriate environment.',
+    title: 'Committed to Trust',
+    description: 'Manual review keeps customer access controlled, intentional, and accountable.',
     icon: ShieldCheck,
   },
   {
-    title: 'Human support',
-    description: 'The MVP keeps provisioning manual so the team can learn from each customer need.',
-    icon: Users,
+    title: 'Built for Growth',
+    description: 'The MVP foundation is ready for future provisioning and monitoring layers.',
+    icon: Network,
   },
+  {
+    title: 'Customers First',
+    description: 'Every workflow is designed around reducing friction from enquiry to access.',
+    icon: Sparkles,
+  },
+];
+
+const manualWork = [
+  'Unclear package comparison',
+  'Slow credential handoff',
+  'Limited request visibility',
+  'Hard-to-track admin notes',
+];
+
+const platformWork = [
+  'Structured GPU catalogue',
+  'Admin enquiry pipeline',
+  'Customer-visible status history',
+  'Credential access workflow',
 ];
 
 export function AboutPage() {
   return (
-    <div className="space-y-8">
-      <PageHeader
-        title="About"
-        description="We are building a focused GPU cloud marketplace for teams that need clear packages and a reliable access workflow."
-      />
-      <section className="space-y-4">
-        <SectionHeader title="Our Approach" />
-        <p className="max-w-3xl text-slate-600 dark:text-slate-300">
-          This MVP is intentionally enquiry-first. Customers browse GPU packages, explain their
-          workload, and receive manually reviewed access credentials when a package is approved.
+    <div className="space-y-24 py-8">
+      <section className="mx-auto max-w-5xl space-y-8 text-center">
+        <p className="inline-flex rounded-full border border-white/10 px-3 py-1 text-xs font-bold text-white">
+          About Us
+        </p>
+        <div className="space-y-4">
+          <h1 className="text-5xl font-black leading-[0.95] tracking-normal text-white md:text-7xl">
+            Helping teams access GPU capacity with confidence
+          </h1>
+          <p className="mx-auto max-w-2xl text-base leading-7 text-[#A6B0CF]">
+            We help AI, rendering, research, and inference teams move from uncertain capacity
+            shopping to a clear, reviewed GPU rental workflow.
+          </p>
+        </div>
+
+        <div className="space-y-5 pt-12">
+          <p className="text-sm font-bold text-white">Trusted by practical compute teams</p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {trustMarks.map((mark) => (
+              <div
+                key={mark}
+                className="rounded-card border border-white/10 bg-white/[0.035] px-5 py-4 text-sm font-bold text-[#A6B0CF]"
+              >
+                {mark}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-4xl space-y-5 text-center">
+        <p className="inline-flex rounded-full border border-white/10 px-3 py-1 text-xs font-bold text-white">
+          Who We Are
+        </p>
+        <h2 className="text-4xl font-black tracking-normal text-white md:text-5xl">Who We Are</h2>
+        <p className="mx-auto max-w-3xl text-base leading-7 text-[#A6B0CF]">
+          This marketplace is built for teams that need more than a raw listing. Customers browse
+          package details, submit workload requirements, and receive access after administrator
+          review.
         </p>
       </section>
-      <section className="space-y-4">
-        <SectionHeader title="What We Care About" />
-        <div className="grid gap-4 md:grid-cols-3">
+
+      <section className="grid gap-4 lg:grid-cols-3">
+        {stats.map((stat) => {
+          const Icon = stat.icon;
+
+          return (
+            <Card key={stat.title}>
+              <CardContent className="space-y-4 p-6">
+                <div className="flex items-center gap-3">
+                  <Icon className="h-5 w-5 text-brand-500" />
+                  <p className="text-2xl font-black text-white">{stat.label}</p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-white">{stat.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[#A6B0CF]">{stat.description}</p>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </section>
+
+      <section className="mx-auto max-w-5xl space-y-8">
+        <div className="space-y-4 text-center">
+          <p className="inline-flex rounded-full border border-white/10 px-3 py-1 text-xs font-bold text-white">
+            Our Values
+          </p>
+          <h2 className="text-4xl font-black tracking-normal text-white">
+            The values behind the platform
+          </h2>
+          <p className="mx-auto max-w-2xl text-sm leading-6 text-[#A6B0CF]">
+            We are building the foundation carefully now so provisioning, monitoring, and billing
+            can be added later without disturbing the customer journey.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
           {values.map((value) => {
             const Icon = value.icon;
 
             return (
               <Card key={value.title}>
-                <CardHeader
-                  title={value.title}
-                  action={<Icon className="h-5 w-5 text-brand-600" />}
-                />
-                <CardContent>
-                  <p className="text-sm text-slate-600 dark:text-slate-300">{value.description}</p>
+                <CardContent className="flex gap-4 p-5">
+                  <Icon className="mt-1 h-5 w-5 shrink-0 text-brand-500" />
+                  <div>
+                    <h3 className="font-bold text-white">{value.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-[#A6B0CF]">{value.description}</p>
+                  </div>
                 </CardContent>
               </Card>
             );
           })}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-4xl space-y-8">
+        <div className="space-y-4 text-center">
+          <p className="inline-flex rounded-full border border-white/10 px-3 py-1 text-xs font-bold text-white">
+            Why Us
+          </p>
+          <h2 className="text-4xl font-black tracking-normal text-white">
+            What makes us stand out in the industry
+          </h2>
+          <p className="mx-auto max-w-2xl text-sm leading-6 text-[#A6B0CF]">
+            The MVP is intentionally focused: clear packages, reviewed enquiries, and controlled
+            credential delivery.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardContent className="space-y-4 p-6">
+              <h3 className="font-bold text-white">Manual Work</h3>
+              <div className="space-y-3">
+                {manualWork.map((item) => (
+                  <p key={item} className="flex items-center gap-2 text-sm text-[#A6B0CF]">
+                    <X className="h-4 w-4 text-red-400" />
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="space-y-4 p-6">
+              <h3 className="font-bold text-white">GPU Cloud Marketplace</h3>
+              <div className="space-y-3">
+                {platformWork.map((item) => (
+                  <p key={item} className="flex items-center gap-2 text-sm text-[#DDE4FF]">
+                    <Check className="h-4 w-4 text-brand-500" />
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
     </div>

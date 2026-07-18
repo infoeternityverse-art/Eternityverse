@@ -76,7 +76,7 @@ export function GpuDetailPage() {
                     <CardContent className="flex items-center gap-3 p-5">
                       <Icon className="h-5 w-5 text-brand-600" />
                       <div>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">{spec.label}</p>
+                        <p className="text-sm text-[#A6B0CF]">{spec.label}</p>
                         <p className="font-semibold">{spec.value || '-'}</p>
                       </div>
                     </CardContent>
@@ -91,10 +91,7 @@ export function GpuDetailPage() {
             {gpuPackage.features?.length ? (
               <div className="grid gap-3 md:grid-cols-2">
                 {gpuPackage.features.map((feature) => (
-                  <p
-                    key={feature}
-                    className="flex items-center gap-2 text-slate-700 dark:text-slate-200"
-                  >
+                  <p key={feature} className="flex items-center gap-2 text-[#DDE4FF]">
                     <CheckCircle className="h-4 w-4 text-green-600" />
                     {feature}
                   </p>
@@ -139,21 +136,21 @@ export function GpuDetailPage() {
               }
             />
             <CardContent className="space-y-4">
-              <div className="rounded-md bg-slate-50 p-4 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">Hourly</p>
+              <div className="rounded-md border border-white/10 bg-white/[0.045] p-4">
+                <p className="text-sm text-[#A6B0CF]">Hourly</p>
                 <p className="text-2xl font-semibold">
                   {formatPrice(gpuPackage.hourlyPrice, gpuPackage.currency)}
                 </p>
               </div>
-              <div className="rounded-md bg-slate-50 p-4 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">Monthly</p>
+              <div className="rounded-md border border-white/10 bg-white/[0.045] p-4">
+                <p className="text-sm text-[#A6B0CF]">Monthly</p>
                 <p className="text-2xl font-semibold">
                   {formatPrice(gpuPackage.monthlyPrice, gpuPackage.currency)}
                 </p>
               </div>
               <div>
                 <p className="text-sm font-medium">Project suitability</p>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                <p className="mt-1 text-sm text-[#A6B0CF]">
                   Share your workload, timeline, and budget so the team can confirm fit before
                   credentials are issued.
                 </p>

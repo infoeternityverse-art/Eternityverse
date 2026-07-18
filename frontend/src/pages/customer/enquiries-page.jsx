@@ -36,7 +36,7 @@ export function EnquiriesPage() {
         title="My Enquiries"
         description="Search, filter, and review your GPU rental requests."
       />
-      <div className="grid gap-3 rounded-card border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-950 lg:grid-cols-[1fr_200px_200px]">
+      <div className="grid items-end gap-4 rounded-card border border-white/10 bg-[#080808] p-4 shadow-soft backdrop-blur-xl md:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_200px_200px]">
         <SearchBar
           value={searchInput}
           onChange={setSearchInput}

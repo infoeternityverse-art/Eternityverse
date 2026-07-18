@@ -53,7 +53,7 @@ export function Drawer({ open, title, children, footer, side = 'right', onClose,
         aria-labelledby={title ? 'drawer-title' : undefined}
         tabIndex={-1}
         className={cn(
-          'fixed border-white/10 bg-surface text-white shadow-glow backdrop-blur-2xl',
+          'fixed border-white/10 bg-[#080808] text-white shadow-glow backdrop-blur-2xl',
           sides[side],
           className
         )}

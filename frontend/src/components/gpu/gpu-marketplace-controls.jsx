@@ -25,7 +25,7 @@ export function GpuMarketplaceControls({
   onSortChange,
 }) {
   return (
-    <div className="grid gap-4 rounded-card border border-white/10 bg-white/[0.045] p-4 shadow-soft backdrop-blur-xl lg:grid-cols-[1fr_220px_220px]">
+    <div className="grid items-end gap-4 rounded-card border border-white/10 bg-[#080808] p-4 shadow-soft backdrop-blur-xl md:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_220px_220px]">
       <SearchBar
         value={search}
         onChange={onSearchChange}

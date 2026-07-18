@@ -4,20 +4,21 @@ import { cn, focusRing } from '@/components/ui/ui-utils.js';
 /**
  * NavLink centralizes active and focus styling for layout navigation.
  */
-export function NavLink({ item, compact = false }) {
+export function NavLink({ item, compact = false, onClick }) {
   const Icon = item.icon;
 
   return (
     <RouterNavLink
       to={item.href}
       end={item.href === '/' || item.href === '/dashboard' || item.href === '/admin'}
+      onClick={onClick}
       className={({ isActive }) =>
         cn(
-          'inline-flex items-center gap-2 rounded-button px-3 py-2 text-sm font-semibold transition duration-200 ease-premium',
+          'relative inline-flex items-center gap-2 rounded-button px-3 py-2 text-sm font-semibold transition duration-200 ease-premium after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:origin-center after:rounded-full after:bg-brand-500 after:shadow-[0_0_18px_rgba(129,74,200,0.75)] after:transition after:duration-200 after:ease-premium',
           focusRing,
           isActive
-            ? 'bg-brand-500 text-white shadow-[0_10px_30px_rgba(129,74,200,0.24)]'
-            : 'text-[#A6B0CF] hover:bg-white/[0.075] hover:text-white',
+            ? 'text-white after:scale-x-100'
+            : 'text-[#A6B0CF] after:scale-x-0 hover:text-white hover:after:scale-x-75',
           compact && 'w-full'
         )
       }

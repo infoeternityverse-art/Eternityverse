@@ -24,7 +24,7 @@ export function SearchBar({
   return (
     <form onSubmit={handleSubmit} className={cn('w-full', className)} role="search">
       <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6C7693]" />
+        <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#A6B0CF]" />
         <input
           type="search"
           value={value}
@@ -32,7 +32,7 @@ export function SearchBar({
           placeholder={placeholder}
           disabled={disabled || loading}
           aria-invalid={Boolean(error)}
-          className={cn(fieldBase, focusRing, disabledClasses, 'h-11 px-10 text-sm')}
+          className={cn(fieldBase, focusRing, disabledClasses, 'h-11 px-12 text-sm')}
         />
         {value && (
           <Button

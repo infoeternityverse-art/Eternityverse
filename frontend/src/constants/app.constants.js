@@ -1,4 +1,4 @@
-export const APP_NAME = 'GPU Cloud Marketplace';
+export const APP_NAME = 'EternityVerse';
 
 export const ROUTE_PATHS = {
   home: '/',

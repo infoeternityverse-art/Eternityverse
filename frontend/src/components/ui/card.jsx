@@ -8,7 +8,7 @@ export function Card({ children, className = '', interactive = false, error = fa
   return (
     <motion.div
       className={cn(
-        'rounded-card border bg-surface text-white shadow-soft backdrop-blur-xl',
+        'rounded-card border bg-[#080808] text-white shadow-soft backdrop-blur-xl',
         error ? 'border-red-500/45' : 'border-white/10',
         interactive &&
           'transition duration-200 ease-premium hover:border-accent-500/35 hover:shadow-glow',

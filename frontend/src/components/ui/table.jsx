@@ -28,7 +28,7 @@ export function Table({
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-table border border-white/10 bg-surface shadow-soft backdrop-blur-xl',
+        'overflow-hidden rounded-table border border-white/10 bg-[#080808] shadow-soft backdrop-blur-xl',
         className
       )}
     >

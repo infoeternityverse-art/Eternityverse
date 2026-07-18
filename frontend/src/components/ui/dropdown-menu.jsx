@@ -23,7 +23,7 @@ export function DropdownMenu({ trigger, items = [], align = 'right', className =
         <motion.div
           role="menu"
           className={cn(
-            'absolute z-40 mt-2 min-w-48 overflow-hidden rounded-card border border-white/10 bg-surface p-1.5 shadow-glow backdrop-blur-2xl',
+            'absolute z-40 mt-2 min-w-48 overflow-hidden rounded-card border border-white/10 bg-[#080808] p-1.5 shadow-glow backdrop-blur-2xl',
             aligns[align],
             className
           )}

@@ -9,7 +9,7 @@ export function ThankYouPage() {
       <Card>
         <CardContent className="space-y-4 p-6">
           <CheckCircle className="h-10 w-10 text-green-600" />
-          <p className="text-slate-700 dark:text-slate-200">
+          <p className="text-[#DDE4FF]">
             Our team will review your project requirements and contact you with the next steps. If
             the package is a fit, credentials will be issued manually after approval.
           </p>

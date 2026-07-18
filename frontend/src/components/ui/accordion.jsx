@@ -33,7 +33,7 @@ export function Accordion({
   return (
     <div
       className={cn(
-        'divide-y divide-white/10 overflow-hidden rounded-card border border-white/10 bg-surface shadow-soft backdrop-blur-xl',
+        'divide-y divide-white/10 overflow-hidden rounded-card border border-white/10 bg-[#080808] shadow-soft backdrop-blur-xl',
         className
       )}
     >

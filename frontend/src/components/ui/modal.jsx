@@ -63,7 +63,7 @@ export function Modal({
         aria-labelledby={title ? 'modal-title' : undefined}
         tabIndex={-1}
         className={cn(
-          'w-full rounded-dialog border border-white/10 bg-surface text-white shadow-glow backdrop-blur-2xl',
+          'w-full rounded-dialog border border-white/10 bg-[#080808] text-white shadow-glow backdrop-blur-2xl',
           sizes[size],
           className
         )}

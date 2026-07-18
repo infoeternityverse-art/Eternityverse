@@ -21,14 +21,10 @@ export const publicNavigation = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'GPUs', href: '/gpus', icon: Boxes },
   { label: 'About', href: '/about', icon: CircleHelp },
-  { label: 'FAQ', href: '/faq', icon: CircleHelp },
   { label: 'Contact', href: '/contact', icon: Contact },
 ];
 
-export const authNavigation = [
-  { label: 'Login', href: '/login' },
-  { label: 'Register', href: '/register' },
-];
+export const authNavigation = [{ label: 'Login / Register', href: '/login' }];
 
 export const customerNavigation = [
   { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
@@ -51,10 +47,10 @@ export const adminUtilityNavigation = [
 ];
 
 export const footerNavigation = [
-  { label: 'About', href: '/about' },
-  { label: 'FAQ', href: '/faq' },
+  { label: 'Home', href: '/' },
+  { label: 'GPU Marketplace', href: '/gpus' },
   { label: 'Contact', href: '/contact' },
-  { label: 'Login', href: '/login' },
+  { label: 'Login / Register', href: '/login' },
 ];
 
 export const breadcrumbLabels = {

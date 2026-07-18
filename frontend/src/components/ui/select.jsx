@@ -43,9 +43,18 @@ export const Select = forwardRef(function Select(
           )}
           {...props}
         >
-          {placeholder && <option value="">{placeholder}</option>}
+          {placeholder && (
+            <option value="" className="bg-[#0A0A0A] text-white">
+              {placeholder}
+            </option>
+          )}
           {options.map((option) => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>
+            <option
+              key={option.value}
+              value={option.value}
+              disabled={option.disabled}
+              className="bg-[#0A0A0A] text-white"
+            >
               {option.label}
             </option>
           ))}
