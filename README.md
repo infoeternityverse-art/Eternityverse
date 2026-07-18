@@ -30,12 +30,56 @@ Set strong production values for JWT secrets and `CREDENTIAL_ENCRYPTION_KEY` bef
 npm run dev
 npm run dev:frontend
 npm run dev:backend
+npm run email:test
 npm run build
 npm run start
 npm run lint
 npm run format
 npm run format:check
 ```
+
+## Email Notifications
+
+Phase 1 includes a reusable notification layer:
+
+```text
+Controller -> Business Service -> Notification Service -> Email Provider -> SMTP
+```
+
+Controllers do not send email directly. Business services call `notificationService` after successful persistence, and every notification failure is logged without failing the original business operation. The provider currently uses Nodemailer over SMTP and can later be replaced or expanded with queue-backed Email, SMS, WhatsApp, Slack, Discord, or push providers.
+
+Required SMTP variables live in `backend/.env`:
+
+```bash
+NOTIFICATIONS_ENABLED=true
+NOTIFICATION_BRAND_NAME=EternityVerse
+SUPPORT_EMAIL=support@example.com
+APP_FRONTEND_URL=http://localhost:5173
+APP_DASHBOARD_URL=http://localhost:5173/dashboard
+APP_ADMIN_URL=http://localhost:5173/admin
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=smtp-user
+SMTP_PASSWORD=smtp-password
+SMTP_FROM_NAME=EternityVerse
+SMTP_FROM_EMAIL=no-reply@example.com
+SMTP_SECURE=false
+PASSWORD_RESET_EXPIRES_IN=30m
+```
+
+Notification triggers:
+
+- Welcome email after customer registration.
+- Enquiry received email after customer enquiry submission.
+- Admin new enquiry notification after enquiry submission.
+- Enquiry status updated email after admin status change.
+- Credentials issued email after admin creates credentials. Passwords are not sent by email.
+- Password reset email after forgot-password request.
+- Password changed email after authenticated password change or reset completion.
+- Profile updated email after customer profile update.
+- Critical system error email template and helper are architecture-ready for future monitoring.
+
+Use `npm run email:test` to verify SMTP configuration in development. The helper sends a non-sensitive test message to `TEST_EMAIL_TO` or `SMTP_FROM_EMAIL`.
 
 ## Quality Gates
 
@@ -59,6 +103,8 @@ npm run build
 - Access tokens are sent with `Authorization: Bearer <token>`.
 - Password hashes are never selected or returned by default.
 - Credential secrets are encrypted at rest for new writes.
+- Passwords, credential passwords, API keys, tokens, and secrets are never sent in notification emails.
+- Password reset links are signed and short-lived.
 - Admin APIs require admin role authorization.
 - Customer APIs require customer role authorization and service-level customer scoping.
 - Helmet, CORS, JSON body limits, request rate limiting, and Mongo operator sanitization are enabled.

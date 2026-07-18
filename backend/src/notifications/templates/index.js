@@ -1,0 +1,9 @@
+export { welcomeEmailTemplate } from './welcome-email.js';
+export { enquiryReceivedEmailTemplate } from './enquiry-received-email.js';
+export { enquiryStatusUpdatedEmailTemplate } from './enquiry-status-updated-email.js';
+export { credentialIssuedEmailTemplate } from './credential-issued-email.js';
+export { passwordResetEmailTemplate } from './password-reset-email.js';
+export { passwordChangedEmailTemplate } from './password-changed-email.js';
+export { profileUpdatedEmailTemplate } from './profile-updated-email.js';
+export { adminNewEnquiryEmailTemplate } from './admin-new-enquiry-email.js';
+export { criticalSystemErrorEmailTemplate } from './critical-system-error-email.js';

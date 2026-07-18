@@ -1,4 +1,5 @@
 import { Credential, CREDENTIAL_STATUSES } from '../models/index.js';
+import { notificationService } from '../notifications/index.js';
 import { decryptCredentialSecret } from '../utils/credential-secret.js';
 import { BaseService } from './base.service.js';
 
@@ -28,6 +29,22 @@ class CredentialService extends BaseService {
       ],
       allowedPopulate: ['customer', 'enquiry', 'gpuPackage', 'issuedBy'],
     });
+  }
+
+  async create(payload, options = {}) {
+    const response = await super.create(payload, options);
+    const credential = await this.findById(response.data._id, {
+      populate: ['customer', 'gpuPackage'],
+      unwrap: true,
+    });
+
+    await notificationService.sendCredentialIssued({
+      credential,
+      customer: credential.customer,
+      gpuPackage: credential.gpuPackage,
+    });
+
+    return response;
   }
 
   findActiveForCustomer(customerId, options = {}) {

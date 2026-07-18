@@ -1,0 +1,29 @@
+import { config } from './index.js';
+import { loadEnv } from './env.js';
+
+export const notificationConfig = {
+  enabled: loadEnv('NOTIFICATIONS_ENABLED', 'true') === 'true',
+  brandName: loadEnv('NOTIFICATION_BRAND_NAME', 'EternityVerse'),
+  supportEmail: loadEnv('SUPPORT_EMAIL', loadEnv('SMTP_FROM_EMAIL', 'support@example.com')),
+  dashboardUrl: loadEnv('APP_DASHBOARD_URL', `${config.corsOrigin}/dashboard`),
+  adminDashboardUrl: loadEnv('APP_ADMIN_URL', `${config.corsOrigin}/admin`),
+  frontendUrl: loadEnv('APP_FRONTEND_URL', config.corsOrigin),
+  smtp: {
+    host: loadEnv('SMTP_HOST'),
+    port: Number(loadEnv('SMTP_PORT', 587)),
+    user: loadEnv('SMTP_USER'),
+    password: loadEnv('SMTP_PASSWORD'),
+    fromName: loadEnv('SMTP_FROM_NAME', loadEnv('NOTIFICATION_BRAND_NAME', 'EternityVerse')),
+    fromEmail: loadEnv('SMTP_FROM_EMAIL'),
+    secure: loadEnv('SMTP_SECURE', 'false') === 'true',
+  },
+};
+
+export const isSmtpConfigured = () =>
+  Boolean(
+    notificationConfig.smtp.host &&
+    notificationConfig.smtp.port &&
+    notificationConfig.smtp.user &&
+    notificationConfig.smtp.password &&
+    notificationConfig.smtp.fromEmail
+  );

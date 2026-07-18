@@ -57,7 +57,16 @@ export function AdminRoute({ children }) {
   }
 
   if (user?.role !== 'admin') {
-    return <Navigate to="/403" replace />;
+    return (
+      <Navigate
+        to="/admin/login"
+        replace
+        state={{
+          from: location,
+          message: 'Please sign in with an admin account to access the admin console.',
+        }}
+      />
+    );
   }
 
   return children;
@@ -67,6 +76,7 @@ export function AdminRoute({ children }) {
  * GuestRoute keeps authenticated users away from login and registration screens.
  */
 export function GuestRoute({ children }) {
+  const location = useLocation();
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isRestoring = useAuthStore((state) => state.isRestoring);
@@ -76,6 +86,10 @@ export function GuestRoute({ children }) {
   }
 
   if (isAuthenticated) {
+    if (location.pathname === '/admin/login' && user?.role !== 'admin') {
+      return children;
+    }
+
     return <Navigate to={user?.role === 'admin' ? '/admin' : '/dashboard'} replace />;
   }
 

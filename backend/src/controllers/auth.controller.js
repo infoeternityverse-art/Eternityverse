@@ -3,6 +3,8 @@ import {
   changeCurrentUserPassword,
   loginAdmin,
   loginUser,
+  requestPasswordReset,
+  resetPassword,
   registerCustomer,
   updateCurrentUser,
 } from '../services/auth.service.js';
@@ -67,6 +69,24 @@ export const changePassword = asyncHandler(async (req, res) => {
 
   return sendSuccess(res, {
     message: 'Password updated successfully.',
+    data: null,
+  });
+});
+
+export const forgotPassword = asyncHandler(async (req, res) => {
+  await requestPasswordReset(req.validated.body);
+
+  return sendSuccess(res, {
+    message: 'If an account exists, a password reset email will be sent.',
+    data: null,
+  });
+});
+
+export const resetPasswordWithToken = asyncHandler(async (req, res) => {
+  await resetPassword(req.validated.body);
+
+  return sendSuccess(res, {
+    message: 'Password reset successful.',
     data: null,
   });
 });

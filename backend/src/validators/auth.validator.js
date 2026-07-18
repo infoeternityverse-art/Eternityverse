@@ -38,3 +38,17 @@ export const changePasswordSchema = z.object({
     newPassword: passwordSchema,
   }),
 });
+
+export const forgotPasswordSchema = z.object({
+  body: z.object({
+    email: z.string().trim().email('Enter a valid email address.').max(254),
+  }),
+});
+
+export const resetPasswordSchema = z.object({
+  body: z.object({
+    email: z.string().trim().email('Enter a valid email address.').max(254),
+    token: z.string().min(20, 'Reset token is required.'),
+    password: passwordSchema,
+  }),
+});

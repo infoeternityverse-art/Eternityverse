@@ -17,3 +17,11 @@ export const registerSchema = z.object({
   email: z.string().trim().email('Enter a valid email address.'),
   password: passwordSchema,
 });
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().trim().email('Enter a valid email address.'),
+});
+
+export const resetPasswordSchema = z.object({
+  password: passwordSchema,
+});

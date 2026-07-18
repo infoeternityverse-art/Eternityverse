@@ -50,7 +50,7 @@ export function Modal({
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#070B14]/75 p-4 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#070B14]/75 p-4 py-6 backdrop-blur-md sm:py-8"
       role="presentation"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -63,7 +63,7 @@ export function Modal({
         aria-labelledby={title ? 'modal-title' : undefined}
         tabIndex={-1}
         className={cn(
-          'w-full rounded-dialog border border-white/10 bg-[#080808] text-white shadow-glow backdrop-blur-2xl',
+          'flex max-h-[calc(100vh-3rem)] w-full flex-col overflow-hidden rounded-dialog border border-white/10 bg-[#080808] text-white shadow-glow backdrop-blur-2xl sm:max-h-[calc(100vh-4rem)]',
           sizes[size],
           className
         )}
@@ -88,7 +88,7 @@ export function Modal({
             </Button>
           )}
         </div>
-        <div className="p-6">{children}</div>
+        <div className="min-h-0 overflow-y-auto p-6">{children}</div>
         {footer && (
           <div className="flex justify-end gap-2 border-t border-white/10 p-6">{footer}</div>
         )}

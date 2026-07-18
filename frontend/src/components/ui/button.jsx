@@ -5,7 +5,7 @@ import { cn, disabledClasses, focusRing, sizeClasses } from './ui-utils.js';
 
 const variants = {
   primary:
-    'bg-brand-500 text-white shadow-[0_10px_32px_rgba(129,74,200,0.30)] hover:bg-brand-600 hover:shadow-[0_14px_46px_rgba(129,74,200,0.28)]',
+    'bg-brand-500 text-white shadow-[0_10px_32px_rgba(172,126,231,0.30)] hover:bg-brand-600 hover:shadow-[0_14px_46px_rgba(172,126,231,0.28)]',
   secondary:
     'border border-white/10 bg-white/[0.075] text-white backdrop-blur hover:border-white/20 hover:bg-white/[0.11]',
   outline:

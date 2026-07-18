@@ -20,6 +20,11 @@ export function LoginPage() {
     <div className="space-y-6">
       <PageHeader title="Login" description="Access your customer dashboard." />
       <LoginForm onSubmit={handleSubmit} loading={isLoading} error={error} />
+      <p className="text-center text-sm text-[#A6B0CF]">
+        <Link to="/forgot-password" className="font-medium text-brand-400 hover:text-white">
+          Forgot password?
+        </Link>
+      </p>
       <p className="text-center text-sm text-slate-500 dark:text-slate-400">
         Need an account?{' '}
         <Link

@@ -76,7 +76,7 @@ export function GpuPackageCard({ gpuPackage }) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button asChild variant="outline" className="w-full">
+        <Button asChild className="w-full">
           <Link to={`/gpus/${id}`}>View Details</Link>
         </Button>
       </CardFooter>

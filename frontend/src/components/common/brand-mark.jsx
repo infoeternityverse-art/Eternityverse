@@ -13,7 +13,13 @@ export function BrandMark({ className = 'h-9 w-9' }) {
           strokeLinejoin="round"
           strokeWidth="5"
         />
-        <path d="M23 32H41" fill="none" stroke="#814ac8" strokeLinecap="round" strokeWidth="3" />
+        <path
+          d="M23 32H41"
+          fill="none"
+          stroke="rgb(172 126 231)"
+          strokeLinecap="round"
+          strokeWidth="3"
+        />
       </svg>
     </span>
   );

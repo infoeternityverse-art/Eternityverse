@@ -5,8 +5,6 @@ import { AdminTableToolbar } from '@/components/admin/admin-table-toolbar.jsx';
 import { formatDate, getId, parseSortValue } from '@/components/admin/admin-utils.js';
 import {
   Button,
-  Card,
-  CardContent,
   Modal,
   PageHeader,
   Pagination,
@@ -138,24 +136,20 @@ export function AdminCredentialsPage() {
         open={isCreateOpen}
         title="Create Credential"
         onClose={() => setCreateOpen(false)}
-        size="lg"
+        size="xl"
       >
-        <Card>
-          <CardContent className="p-5">
-            <CredentialForm
-              onSubmit={createCredential.mutateAsync}
-              loading={createCredential.isPending}
-              error={createCredential.error?.message}
-              submitLabel="Create Credential"
-            />
-          </CardContent>
-        </Card>
+        <CredentialForm
+          onSubmit={createCredential.mutateAsync}
+          loading={createCredential.isPending}
+          error={createCredential.error?.message}
+          submitLabel="Create Credential"
+        />
       </Modal>
       <Modal
         open={Boolean(editingCredential)}
         title="Edit Credential"
         onClose={() => setEditingCredential(null)}
-        size="lg"
+        size="xl"
       >
         <CredentialForm
           initialValue={editingCredential}

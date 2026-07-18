@@ -68,6 +68,14 @@ const AdminLoginPage = lazyPage(
 );
 const LoginPage = lazyPage(() => import('@/pages/auth/login-page.jsx'), 'LoginPage');
 const RegisterPage = lazyPage(() => import('@/pages/auth/register-page.jsx'), 'RegisterPage');
+const ForgotPasswordPage = lazyPage(
+  () => import('@/pages/auth/forgot-password-page.jsx'),
+  'ForgotPasswordPage'
+);
+const ResetPasswordPage = lazyPage(
+  () => import('@/pages/auth/reset-password-page.jsx'),
+  'ResetPasswordPage'
+);
 const CredentialsPage = lazyPage(
   () => import('@/pages/customer/credentials-page.jsx'),
   'CredentialsPage'
@@ -129,6 +137,8 @@ export const router = createBrowserRouter(
       children: [
         { path: '/login', element: withSuspense(LoginPage) },
         { path: '/register', element: withSuspense(RegisterPage) },
+        { path: '/forgot-password', element: withSuspense(ForgotPasswordPage) },
+        { path: '/reset-password', element: withSuspense(ResetPasswordPage) },
         { path: '/admin/login', element: withSuspense(AdminLoginPage) },
       ],
     },

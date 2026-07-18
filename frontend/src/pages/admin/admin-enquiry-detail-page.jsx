@@ -16,7 +16,7 @@ import { useEnquiry, useUpdateAdminEnquiry } from '@/hooks/index.js';
 
 export function AdminEnquiryDetailPage() {
   const { id } = useParams();
-  const enquiry = useEnquiry(id);
+  const enquiry = useEnquiry(id, { populate: 'customer,gpuPackage' });
   const updateEnquiry = useUpdateAdminEnquiry();
   const [adminNotes, setAdminNotes] = useState('');
   const [customerVisibleNotes, setCustomerVisibleNotes] = useState('');
@@ -25,6 +25,11 @@ export function AdminEnquiryDetailPage() {
   if (enquiry.error) return <Alert variant="danger">{enquiry.error.message}</Alert>;
 
   const record = enquiry.data;
+  const selectedGpuPackage = record.gpuPackage;
+  const selectedGpuName =
+    selectedGpuPackage?.name ||
+    selectedGpuPackage?.gpuModel ||
+    (typeof selectedGpuPackage === 'string' ? selectedGpuPackage : 'Not selected');
   const saveNotes = () =>
     updateEnquiry.mutateAsync({
       id,
@@ -33,7 +38,7 @@ export function AdminEnquiryDetailPage() {
   const updateStatus = (status) => updateEnquiry.mutateAsync({ id, payload: { status } });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pt-2">
       <PageHeader
         title="Enquiry Detail"
         description="Review request context, notes, and manual decision status."
@@ -50,39 +55,65 @@ export function AdminEnquiryDetailPage() {
             <SectionHeader title="Request" />
             <dl className="grid gap-4 md:grid-cols-2">
               <div>
-                <dt className="text-sm text-slate-500">Name</dt>
+                <dt className="text-sm text-[#A6B0CF]">Name</dt>
                 <dd className="font-medium">{record.contactName}</dd>
               </div>
               <div>
-                <dt className="text-sm text-slate-500">Email</dt>
+                <dt className="text-sm text-[#A6B0CF]">Email</dt>
                 <dd className="font-medium">{record.contactEmail}</dd>
               </div>
               <div>
-                <dt className="text-sm text-slate-500">Phone</dt>
+                <dt className="text-sm text-[#A6B0CF]">Phone</dt>
                 <dd className="font-medium">{record.contactPhone || '-'}</dd>
               </div>
               <div>
-                <dt className="text-sm text-slate-500">Duration</dt>
+                <dt className="text-sm text-[#A6B0CF]">Duration</dt>
                 <dd className="font-medium">{record.duration || '-'}</dd>
               </div>
               <div>
-                <dt className="text-sm text-slate-500">Budget</dt>
+                <dt className="text-sm text-[#A6B0CF]">Budget</dt>
                 <dd className="font-medium">{record.budget ?? '-'}</dd>
               </div>
               <div>
-                <dt className="text-sm text-slate-500">Submitted</dt>
+                <dt className="text-sm text-[#A6B0CF]">Submitted</dt>
                 <dd className="font-medium">{formatDate(record.createdAt)}</dd>
               </div>
             </dl>
-            <div>
-              <p className="text-sm text-slate-500">Project Description</p>
-              <p className="mt-1 text-slate-700 dark:text-slate-200">{record.projectDescription}</p>
+            <div className="rounded-card border border-white/10 bg-white/[0.035] p-5">
+              <SectionHeader
+                title="Selected GPU Package"
+                description="Package chosen by the customer for this enquiry."
+              />
+              <dl className="mt-4 grid gap-4 md:grid-cols-2">
+                <div>
+                  <dt className="text-sm text-[#A6B0CF]">Package</dt>
+                  <dd className="font-semibold text-white">{selectedGpuName}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-[#A6B0CF]">GPU Model</dt>
+                  <dd className="font-semibold text-white">
+                    {selectedGpuPackage?.gpuModel || '-'}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-[#A6B0CF]">VRAM</dt>
+                  <dd className="font-semibold text-white">
+                    {selectedGpuPackage?.gpuMemoryGb ? `${selectedGpuPackage.gpuMemoryGb}GB` : '-'}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-[#A6B0CF]">Region</dt>
+                  <dd className="font-semibold text-white">{selectedGpuPackage?.region || '-'}</dd>
+                </div>
+              </dl>
             </div>
             <div>
-              <p className="text-sm text-slate-500">Expected Usage</p>
-              <p className="mt-1 text-slate-700 dark:text-slate-200">
-                {record.expectedUsage || '-'}
-              </p>
+              <p className="text-sm text-[#A6B0CF]">Project Description</p>
+              <p className="mt-1 leading-7 text-[#DDE4FF]">{record.projectDescription}</p>
+            </div>
+            <div>
+              <p className="text-sm text-[#A6B0CF]">Expected Usage</p>
+              <p className="mt-1 leading-7 text-[#DDE4FF]">{record.expectedUsage || '-'}</p>
             </div>
           </CardContent>
         </Card>
@@ -142,13 +173,13 @@ export function AdminEnquiryDetailPage() {
               {(record.statusHistory || []).map((item, index) => (
                 <div
                   key={`${item.status}-${index}`}
-                  className="rounded-md bg-slate-50 p-3 text-sm dark:bg-slate-900"
+                  className="rounded-card border border-white/10 bg-white/[0.035] p-3 text-sm"
                 >
                   <StatusBadge
                     status={item.status}
                     label={item.status === 'contacted' ? 'in review' : item.status}
                   />
-                  <p className="mt-1 text-slate-500">{formatDate(item.changedAt)}</p>
+                  <p className="mt-1 text-[#A6B0CF]">{formatDate(item.changedAt)}</p>
                 </div>
               ))}
             </CardContent>

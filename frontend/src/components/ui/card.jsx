@@ -27,7 +27,7 @@ export function Card({ children, className = '', interactive = false, error = fa
  */
 export function CardHeader({ title, description, action, className = '' }) {
   return (
-    <div className={cn('flex items-start justify-between gap-5 p-6', className)}>
+    <div className={cn('flex items-start justify-between gap-5 px-6 pb-3 pt-6', className)}>
       <div>
         {title && <h3 className="text-base font-bold tracking-normal text-white">{title}</h3>}
         {description && <p className="mt-1.5 text-sm leading-6 text-[#A6B0CF]">{description}</p>}
@@ -41,7 +41,7 @@ export function CardHeader({ title, description, action, className = '' }) {
  * CardContent provides standard inner card spacing.
  */
 export function CardContent({ children, className = '' }) {
-  return <div className={cn('p-6 pt-0', className)}>{children}</div>;
+  return <div className={cn('p-6', className)}>{children}</div>;
 }
 
 /**

@@ -1,7 +1,14 @@
 import { User, USER_ROLES } from '../models/index.js';
+import { config } from '../config/index.js';
+import { notificationConfig } from '../config/notification.config.js';
+import { notificationService } from '../notifications/index.js';
 import { ApiError } from '../utils/api-error.js';
 import { comparePassword, hashPassword } from './password.service.js';
-import { issueAuthTokens } from './token.service.js';
+import {
+  issueAuthTokens,
+  signPasswordResetToken,
+  verifyPasswordResetToken,
+} from './token.service.js';
 
 const sanitizeUser = (user) => user.toJSON();
 
@@ -24,6 +31,8 @@ export const registerCustomer = async ({ name, email, password }) => {
     passwordHash,
     role: USER_ROLES.CUSTOMER,
   });
+
+  await notificationService.sendWelcomeEmail(user);
 
   return buildAuthResponse(user);
 };
@@ -71,6 +80,8 @@ export const updateCurrentUser = async (user, payload) => {
   Object.assign(user, payload);
   await user.save();
 
+  await notificationService.sendProfileUpdated(user);
+
   return sanitizeUser(user);
 };
 
@@ -83,4 +94,48 @@ export const changeCurrentUserPassword = async (user, { currentPassword, newPass
 
   userWithPassword.passwordHash = await hashPassword(newPassword);
   await userWithPassword.save();
+
+  await notificationService.sendPasswordChanged(userWithPassword);
+};
+
+export const requestPasswordReset = async ({ email }) => {
+  const user = await User.findByEmail(email).select('+passwordHash');
+
+  if (!user || !user.isActive) {
+    return;
+  }
+
+  const token = signPasswordResetToken(user);
+  const resetUrl = `${notificationConfig.frontendUrl}/reset-password?token=${encodeURIComponent(
+    token
+  )}&email=${encodeURIComponent(user.email)}`;
+
+  await notificationService.sendPasswordReset({
+    user,
+    resetUrl,
+    expiresIn: config.jwt.passwordResetExpiresIn,
+  });
+};
+
+export const resetPassword = async ({ email, token, password }) => {
+  const user = await User.findByEmail(email).select('+passwordHash');
+
+  if (!user || !user.isActive) {
+    throw new ApiError(400, 'Invalid or expired password reset link.');
+  }
+
+  try {
+    const payload = verifyPasswordResetToken(token, user);
+
+    if (payload.purpose !== 'password_reset' || payload.sub !== user._id.toString()) {
+      throw new Error('Invalid password reset token.');
+    }
+  } catch {
+    throw new ApiError(400, 'Invalid or expired password reset link.');
+  }
+
+  user.passwordHash = await hashPassword(password);
+  await user.save();
+
+  await notificationService.sendPasswordChanged(user);
 };

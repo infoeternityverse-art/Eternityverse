@@ -1,15 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Alert, Button, Input, Select, Textarea } from '@/components/ui/index.js';
+import { useAdminEnquiries, useAdminGpuPackages, useUsers } from '@/hooks/index.js';
 
 const toNumber = (value) => (value === '' || value === undefined ? undefined : Number(value));
+const objectIdSchema = z.string().regex(/^[a-f\d]{24}$/i, 'Select a valid record.');
 
 const credentialSchema = z.object({
-  customer: z.string().min(1, 'Customer is required.'),
-  enquiry: z.string().min(1, 'Enquiry is required.'),
-  gpuPackage: z.string().min(1, 'GPU package is required.'),
+  customer: objectIdSchema,
+  enquiry: objectIdSchema,
+  gpuPackage: objectIdSchema,
   host: z.string().trim().min(1).max(255),
   port: z.preprocess(toNumber, z.number().int().min(1).max(65535)),
   username: z.string().trim().min(1).max(120),
@@ -41,12 +43,57 @@ export function CredentialForm({
   error,
   submitLabel = 'Save Credential',
 }) {
+  const enquiries = useAdminEnquiries({
+    limit: 100,
+    status: 'approved',
+    populate: 'customer,gpuPackage',
+    sort: 'createdAt',
+    order: 'desc',
+  });
+  const customers = useUsers({ limit: 100, role: 'customer', sort: 'name', order: 'asc' });
+  const gpuPackages = useAdminGpuPackages({ limit: 100, sort: 'name', order: 'asc' });
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm({ resolver: zodResolver(credentialSchema), defaultValues: defaults });
+
+  const getId = (record) => record?.id || record?._id || record || '';
+  const enquiryOptions = useMemo(
+    () =>
+      (enquiries.data?.data || []).map((enquiry) => {
+        const customerName = enquiry.customer?.name || enquiry.contactName || 'Unassigned customer';
+        const packageName = enquiry.gpuPackage?.name || 'GPU package';
+        const createdAt = enquiry.createdAt ? new Date(enquiry.createdAt).toLocaleDateString() : '';
+
+        return {
+          value: getId(enquiry),
+          label: `${customerName} - ${packageName}${createdAt ? ` - ${createdAt}` : ''}`,
+        };
+      }),
+    [enquiries.data?.data]
+  );
+  const customerOptions = useMemo(
+    () =>
+      (customers.data?.data || []).map((customer) => ({
+        value: getId(customer),
+        label: `${customer.name} (${customer.email})`,
+      })),
+    [customers.data?.data]
+  );
+  const gpuPackageOptions = useMemo(
+    () =>
+      (gpuPackages.data?.data || []).map((gpuPackage) => ({
+        value: getId(gpuPackage),
+        label: gpuPackage.name,
+      })),
+    [gpuPackages.data?.data]
+  );
+  const selectedEnquiryId = watch('enquiry');
 
   useEffect(() => {
     if (initialValue) {
@@ -68,6 +115,27 @@ export function CredentialForm({
     }
   }, [initialValue, reset]);
 
+  useEffect(() => {
+    if (!selectedEnquiryId || initialValue) return;
+
+    const selectedEnquiry = (enquiries.data?.data || []).find(
+      (enquiry) => getId(enquiry) === selectedEnquiryId
+    );
+
+    if (!selectedEnquiry) return;
+
+    const customerId = getId(selectedEnquiry.customer);
+    const gpuPackageId = getId(selectedEnquiry.gpuPackage);
+
+    if (customerId) {
+      setValue('customer', customerId, { shouldValidate: true });
+    }
+
+    if (gpuPackageId) {
+      setValue('gpuPackage', gpuPackageId, { shouldValidate: true });
+    }
+  }, [enquiries.data?.data, initialValue, selectedEnquiryId, setValue]);
+
   const handleValidSubmit = (values) =>
     onSubmit({
       ...values,
@@ -79,25 +147,39 @@ export function CredentialForm({
     <form onSubmit={handleSubmit(handleValidSubmit)} className="space-y-4">
       {error && <Alert variant="danger">{error}</Alert>}
       <div className="grid gap-4 md:grid-cols-2">
-        <Input
-          id="customer"
-          label="Customer ID"
-          error={errors.customer?.message}
-          disabled={loading}
-          {...register('customer')}
-        />
-        <Input
+        <Select
           id="enquiry"
-          label="Enquiry ID"
-          error={errors.enquiry?.message}
+          label="Approved Enquiry"
+          placeholder={enquiries.isLoading ? 'Loading enquiries...' : 'Select approved enquiry'}
+          options={enquiryOptions}
           disabled={loading}
+          loading={enquiries.isLoading}
+          error={errors.enquiry?.message}
+          helperText={
+            enquiryOptions.length === 0 && !enquiries.isLoading
+              ? 'Approve an enquiry before issuing credentials.'
+              : undefined
+          }
           {...register('enquiry')}
         />
-        <Input
-          id="gpuPackage"
-          label="GPU Package ID"
-          error={errors.gpuPackage?.message}
+        <Select
+          id="customer"
+          label="Customer"
+          placeholder={customers.isLoading ? 'Loading customers...' : 'Select customer'}
+          options={customerOptions}
           disabled={loading}
+          loading={customers.isLoading}
+          error={errors.customer?.message}
+          {...register('customer')}
+        />
+        <Select
+          id="gpuPackage"
+          label="GPU Package"
+          placeholder={gpuPackages.isLoading ? 'Loading packages...' : 'Select GPU package'}
+          options={gpuPackageOptions}
+          disabled={loading}
+          loading={gpuPackages.isLoading}
+          error={errors.gpuPackage?.message}
           {...register('gpuPackage')}
         />
         <Input

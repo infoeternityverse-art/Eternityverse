@@ -15,6 +15,7 @@ export const config = {
     refreshSecret: requireEnv('JWT_REFRESH_SECRET'),
     accessExpiresIn: loadEnv('JWT_ACCESS_EXPIRES_IN', '15m'),
     refreshExpiresIn: loadEnv('JWT_REFRESH_EXPIRES_IN', '7d'),
+    passwordResetExpiresIn: loadEnv('PASSWORD_RESET_EXPIRES_IN', '30m'),
   },
   bcryptSaltRounds: Number(loadEnv('BCRYPT_SALT_ROUNDS', 12)),
   credentialEncryptionKey: loadEnv(

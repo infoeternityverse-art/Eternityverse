@@ -14,7 +14,7 @@ export function NavLink({ item, compact = false, onClick }) {
       onClick={onClick}
       className={({ isActive }) =>
         cn(
-          'relative inline-flex items-center gap-2 rounded-button px-3 py-2 text-sm font-semibold transition duration-200 ease-premium after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:origin-center after:rounded-full after:bg-brand-500 after:shadow-[0_0_18px_rgba(129,74,200,0.75)] after:transition after:duration-200 after:ease-premium',
+          'relative inline-flex items-center gap-2 rounded-button px-3 py-2 text-sm font-semibold transition duration-200 ease-premium after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:origin-center after:rounded-full after:bg-brand-500 after:shadow-[0_0_18px_rgba(172,126,231,0.75)] after:transition after:duration-200 after:ease-premium',
           focusRing,
           isActive
             ? 'text-white after:scale-x-100'

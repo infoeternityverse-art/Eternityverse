@@ -13,4 +13,8 @@ export const authService = {
   updateMe: async (payload) => normalizeAuthPayload(await apiClient.patch('/auth/me', payload)),
   changePassword: async (payload) =>
     normalizeAuthPayload(await apiClient.patch('/auth/password', payload)),
+  forgotPassword: async (payload) =>
+    normalizeAuthPayload(await apiClient.post('/auth/forgot-password', payload)),
+  resetPassword: async (payload) =>
+    normalizeAuthPayload(await apiClient.post('/auth/reset-password', payload)),
 };
