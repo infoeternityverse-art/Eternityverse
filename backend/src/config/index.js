@@ -1,0 +1,26 @@
+import { loadEnv, requireEnv } from './env.js';
+
+export const config = {
+  nodeEnv: loadEnv('NODE_ENV', 'development'),
+  port: Number(loadEnv('PORT', 5000)),
+  mongoUri: requireEnv('MONGO_URI'),
+  corsOrigin: loadEnv('CORS_ORIGIN', 'http://localhost:5173'),
+  logLevel: loadEnv('LOG_LEVEL', 'info'),
+  rateLimit: {
+    windowMs: Number(loadEnv('RATE_LIMIT_WINDOW_MS', 15 * 60 * 1000)),
+    max: Number(loadEnv('RATE_LIMIT_MAX', 300)),
+  },
+  jwt: {
+    accessSecret: requireEnv('JWT_ACCESS_SECRET'),
+    refreshSecret: requireEnv('JWT_REFRESH_SECRET'),
+    accessExpiresIn: loadEnv('JWT_ACCESS_EXPIRES_IN', '15m'),
+    refreshExpiresIn: loadEnv('JWT_REFRESH_EXPIRES_IN', '7d'),
+  },
+  bcryptSaltRounds: Number(loadEnv('BCRYPT_SALT_ROUNDS', 12)),
+  credentialEncryptionKey: loadEnv(
+    'CREDENTIAL_ENCRYPTION_KEY',
+    loadEnv('NODE_ENV', 'development') === 'production'
+      ? undefined
+      : 'development-only-credential-encryption-key'
+  ),
+};

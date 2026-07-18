@@ -1,0 +1,45 @@
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
+import mongoSanitize from 'express-mongo-sanitize';
+import { config } from './config/index.js';
+import { notFoundHandler, errorHandler } from './middlewares/error.middleware.js';
+import { apiRouter } from './routes/index.js';
+
+export const app = express();
+
+app.use(helmet());
+app.use(
+  rateLimit({
+    windowMs: config.rateLimit.windowMs,
+    max: config.rateLimit.max,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+      success: false,
+      message: 'Too many requests. Please try again later.',
+      errors: [],
+    },
+  })
+);
+app.use(
+  cors({
+    origin: config.corsOrigin,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true }));
+app.use(mongoSanitize());
+
+if (config.nodeEnv !== 'test') {
+  app.use(morgan(config.nodeEnv === 'production' ? 'combined' : 'dev'));
+}
+
+app.use(apiRouter);
+
+app.use(notFoundHandler);
+app.use(errorHandler);

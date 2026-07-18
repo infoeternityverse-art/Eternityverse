@@ -1,0 +1,43 @@
+export const queryKeys = {
+  users: {
+    all: ['users'],
+    lists: () => [...queryKeys.users.all, 'list'],
+    list: (params = {}) => [...queryKeys.users.lists(), params],
+    details: () => [...queryKeys.users.all, 'detail'],
+    detail: (id) => [...queryKeys.users.details(), id],
+  },
+  gpuPackages: {
+    all: ['gpu-packages'],
+    lists: () => [...queryKeys.gpuPackages.all, 'list'],
+    list: (params = {}) => [...queryKeys.gpuPackages.lists(), params],
+    details: () => [...queryKeys.gpuPackages.all, 'detail'],
+    detail: (id) => [...queryKeys.gpuPackages.details(), id],
+    adminLists: () => [...queryKeys.gpuPackages.all, 'admin', 'list'],
+    adminList: (params = {}) => [...queryKeys.gpuPackages.adminLists(), params],
+    adminDetails: () => [...queryKeys.gpuPackages.all, 'admin', 'detail'],
+    adminDetail: (id) => [...queryKeys.gpuPackages.adminDetails(), id],
+  },
+  enquiries: {
+    all: ['enquiries'],
+    lists: () => [...queryKeys.enquiries.all, 'list'],
+    list: (params = {}) => [...queryKeys.enquiries.lists(), params],
+    details: () => [...queryKeys.enquiries.all, 'detail'],
+    detail: (id) => [...queryKeys.enquiries.details(), id],
+    customerLists: () => [...queryKeys.enquiries.all, 'customer', 'list'],
+    customerList: (params = {}) => [...queryKeys.enquiries.customerLists(), params],
+    adminLists: () => [...queryKeys.enquiries.all, 'admin', 'list'],
+    adminList: (params = {}) => [...queryKeys.enquiries.adminLists(), params],
+  },
+  credentials: {
+    all: ['credentials'],
+    customerLists: () => [...queryKeys.credentials.all, 'customer', 'list'],
+    customerList: (params = {}) => [...queryKeys.credentials.customerLists(), params],
+    adminLists: () => [...queryKeys.credentials.all, 'admin', 'list'],
+    adminList: (params = {}) => [...queryKeys.credentials.adminLists(), params],
+  },
+  auditLogs: {
+    all: ['audit-logs'],
+    lists: () => [...queryKeys.auditLogs.all, 'list'],
+    list: (params = {}) => [...queryKeys.auditLogs.lists(), params],
+  },
+};

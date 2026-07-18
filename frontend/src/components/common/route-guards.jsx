@@ -1,0 +1,83 @@
+import { Navigate, useLocation } from 'react-router-dom';
+import { Spinner } from '@/components/ui/index.js';
+import { useAuthStore } from '@/store/auth-store.js';
+
+const RouteLoader = () => (
+  <div className="flex min-h-48 items-center justify-center">
+    <Spinner label="Checking session" />
+  </div>
+);
+
+/**
+ * ProtectedRoute requires an authenticated customer session before rendering dashboard routes.
+ */
+export function ProtectedRoute({ children }) {
+  const location = useLocation();
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isRestoring = useAuthStore((state) => state.isRestoring);
+
+  if (isRestoring) {
+    return <RouteLoader />;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  if (user?.role !== 'customer') {
+    return <Navigate to="/403" replace />;
+  }
+
+  return children;
+}
+
+/**
+ * PublicRoute wraps routes available to all visitors.
+ */
+export function PublicRoute({ children }) {
+  return children;
+}
+
+/**
+ * AdminRoute requires an authenticated admin session before rendering admin routes.
+ */
+export function AdminRoute({ children }) {
+  const location = useLocation();
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isRestoring = useAuthStore((state) => state.isRestoring);
+
+  if (isRestoring) {
+    return <RouteLoader />;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace state={{ from: location }} />;
+  }
+
+  if (user?.role !== 'admin') {
+    return <Navigate to="/403" replace />;
+  }
+
+  return children;
+}
+
+/**
+ * GuestRoute keeps authenticated users away from login and registration screens.
+ */
+export function GuestRoute({ children }) {
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isRestoring = useAuthStore((state) => state.isRestoring);
+
+  if (isRestoring) {
+    return <RouteLoader />;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to={user?.role === 'admin' ? '/admin' : '/dashboard'} replace />;
+  }
+
+  return children;
+}

@@ -1,0 +1,28 @@
+import { Router } from 'express';
+import {
+  adminLogin,
+  changePassword,
+  login,
+  logout,
+  me,
+  register,
+  updateMe,
+} from '../controllers/auth.controller.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
+import { validate } from '../middlewares/validate.middleware.js';
+import {
+  changePasswordSchema,
+  loginSchema,
+  registerSchema,
+  updateMeSchema,
+} from '../validators/auth.validator.js';
+
+export const authRouter = Router();
+
+authRouter.post('/register', validate(registerSchema), register);
+authRouter.post('/login', validate(loginSchema), login);
+authRouter.post('/admin/login', validate(loginSchema), adminLogin);
+authRouter.post('/logout', authenticate, logout);
+authRouter.get('/me', authenticate, me);
+authRouter.patch('/me', authenticate, validate(updateMeSchema), updateMe);
+authRouter.patch('/password', authenticate, validate(changePasswordSchema), changePassword);
