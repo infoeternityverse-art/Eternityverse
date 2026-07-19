@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Boxes, CheckCircle, Clock, KeyRound, ScrollText, XCircle } from 'lucide-react';
+import { Boxes, CheckCircle, Clock, ScrollText, Workflow, XCircle } from 'lucide-react';
 import {
   Button,
   Card,
@@ -11,9 +11,9 @@ import {
 } from '@/components/ui/index.js';
 import { formatDate, getId } from '@/components/admin/admin-utils.js';
 import {
-  useAdminCredentials,
   useAdminEnquiries,
   useAdminGpuPackages,
+  useAdminWorkspaces,
   useAuditLogs,
 } from '@/hooks/index.js';
 
@@ -23,17 +23,18 @@ export function AdminDashboardPage() {
   const pendingEnquiries = useAdminEnquiries({ limit: 1, status: 'pending' });
   const approvedEnquiries = useAdminEnquiries({ limit: 1, status: 'approved' });
   const rejectedEnquiries = useAdminEnquiries({ limit: 1, status: 'rejected' });
-  const credentials = useAdminCredentials({ limit: 1 });
+  const runningWorkspaces = useAdminWorkspaces({ limit: 1, status: 'running' });
+  const expiredWorkspaces = useAdminWorkspaces({ limit: 1, status: 'expired' });
   const recentActivity = useAuditLogs({ limit: 5, sort: 'createdAt', order: 'desc' });
 
   return (
     <div className="space-y-8">
       <PageHeader
         title="Admin Overview"
-        description="Phase 1 manual operations snapshot for packages, enquiries, credentials, and activity."
+        description="Phase 1 manual operations snapshot for packages, enquiries, workspaces, and activity."
         action={
           <Button asChild>
-            <Link to="/admin/gpu-packages/new">Create Package</Link>
+            <Link to="/admin/workspaces/new">Create Workspace</Link>
           </Button>
         }
       />
@@ -69,10 +70,16 @@ export function AdminDashboardPage() {
           icon={<XCircle className="h-5 w-5" />}
         />
         <StatCard
-          label="Issued Credentials"
-          value={credentials.data?.meta?.total ?? '-'}
-          loading={credentials.isLoading}
-          icon={<KeyRound className="h-5 w-5" />}
+          label="Running Workspaces"
+          value={runningWorkspaces.data?.meta?.total ?? '-'}
+          loading={runningWorkspaces.isLoading}
+          icon={<Workflow className="h-5 w-5" />}
+        />
+        <StatCard
+          label="Expired Workspaces"
+          value={expiredWorkspaces.data?.meta?.total ?? '-'}
+          loading={expiredWorkspaces.isLoading}
+          icon={<Clock className="h-5 w-5" />}
         />
       </div>
       <Card>

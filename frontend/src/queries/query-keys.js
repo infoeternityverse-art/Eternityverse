@@ -40,4 +40,13 @@ export const queryKeys = {
     lists: () => [...queryKeys.auditLogs.all, 'list'],
     list: (params = {}) => [...queryKeys.auditLogs.lists(), params],
   },
+  workspaces: {
+    all: ['workspaces'],
+    customerDetails: () => [...queryKeys.workspaces.all, 'customer', 'detail'],
+    customerDetail: (params = {}) => [...queryKeys.workspaces.customerDetails(), params],
+    adminLists: () => [...queryKeys.workspaces.all, 'admin', 'list'],
+    adminList: (params = {}) => [...queryKeys.workspaces.adminLists(), params],
+    adminDetails: () => [...queryKeys.workspaces.all, 'admin', 'detail'],
+    adminDetail: (id, params = {}) => [...queryKeys.workspaces.adminDetails(), id, params],
+  },
 };

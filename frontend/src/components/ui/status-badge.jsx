@@ -5,12 +5,18 @@ const statusVariantMap = {
   available: 'success',
   success: 'success',
   pending: 'warning',
+  provisioning: 'warning',
+  maintenance: 'warning',
   warning: 'warning',
   inactive: 'neutral',
   disabled: 'neutral',
+  stopped: 'neutral',
+  expired: 'neutral',
   revoked: 'danger',
   rejected: 'danger',
+  failed: 'danger',
   error: 'danger',
+  running: 'success',
 };
 
 /**

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ClipboardList, KeyRound, Search, User } from 'lucide-react';
+import { ClipboardList, Search, User, Workflow } from 'lucide-react';
 import {
   Button,
   Card,
@@ -11,15 +11,22 @@ import {
   Table,
 } from '@/components/ui/index.js';
 import { formatDate, getId } from '@/components/dashboard/dashboard-utils.js';
-import { useCustomerCredentials, useCustomerEnquiries } from '@/hooks/index.js';
+import { useCustomerEnquiries, useCustomerWorkspace } from '@/hooks/index.js';
+import {
+  formatWorkspaceProvider,
+  formatWorkspaceStatus,
+  getWorkspaceDisplayStatus,
+  getWorkspacePackageName,
+} from '@/components/admin/workspace-utils.js';
 import { useAuthStore } from '@/store/auth-store.js';
 
 export function DashboardPage() {
   const user = useAuthStore((state) => state.user);
   const enquiries = useCustomerEnquiries({ limit: 5, sort: 'createdAt', order: 'desc' });
-  const credentials = useCustomerCredentials({ limit: 5, sort: 'issuedAt', order: 'desc' });
+  const workspace = useCustomerWorkspace({ populate: 'package' });
   const recentEnquiries = enquiries.data?.data || [];
-  const activeCredentials = credentials.data?.data || [];
+  const activeWorkspace = workspace.data;
+  const workspaceStatus = activeWorkspace ? getWorkspaceDisplayStatus(activeWorkspace) : null;
   const recentActivity = [
     ...recentEnquiries.map((enquiry) => ({
       id: `enquiry-${getId(enquiry)}`,
@@ -28,13 +35,17 @@ export function DashboardPage() {
       date: enquiry.createdAt,
       status: enquiry.status,
     })),
-    ...activeCredentials.map((credential) => ({
-      id: `credential-${getId(credential)}`,
-      title: 'Credential issued',
-      description: credential.gpuPackage?.name || credential.host,
-      date: credential.issuedAt || credential.createdAt,
-      status: credential.status,
-    })),
+    ...(activeWorkspace
+      ? [
+          {
+            id: `workspace-${getId(activeWorkspace)}`,
+            title: 'Workspace updated',
+            description: `${activeWorkspace.gpuModel || getWorkspacePackageName(activeWorkspace)} workspace`,
+            date: activeWorkspace.updatedAt || activeWorkspace.createdAt,
+            status: workspaceStatus,
+          },
+        ]
+      : []),
   ]
     .sort((first, second) => new Date(second.date || 0) - new Date(first.date || 0))
     .slice(0, 5);
@@ -43,7 +54,7 @@ export function DashboardPage() {
     <div className="space-y-8">
       <PageHeader
         title={`Welcome${user?.name ? `, ${user.name}` : ''}`}
-        description="Track enquiries, credentials, and account activity from your customer portal."
+        description="Track enquiries, workspace access, and account activity from your customer portal."
         action={
           <Button asChild>
             <Link to="/gpus">Browse GPUs</Link>
@@ -59,10 +70,10 @@ export function DashboardPage() {
           icon={<ClipboardList className="h-5 w-5" />}
         />
         <StatCard
-          label="Active Credentials"
-          value={credentials.data?.meta?.total ?? '-'}
-          loading={credentials.isLoading}
-          icon={<KeyRound className="h-5 w-5" />}
+          label="Workspace"
+          value={activeWorkspace ? formatWorkspaceStatus(workspaceStatus) : 'Pending'}
+          loading={workspace.isLoading}
+          icon={<Workflow className="h-5 w-5" />}
         />
         <StatCard
           label="Account"
@@ -116,22 +127,38 @@ export function DashboardPage() {
         <Card>
           <CardContent className="space-y-4 p-5">
             <SectionHeader
-              title="Active Credentials"
+              title="Workspace Access"
               action={
                 <Button asChild variant="outline" size="sm">
-                  <Link to="/dashboard/credentials">View all</Link>
+                  <Link to="/dashboard/workspace">Open workspace</Link>
                 </Button>
               }
             />
             <Table
-              loading={credentials.isLoading}
-              error={credentials.error?.message}
-              data={activeCredentials}
+              loading={workspace.isLoading}
+              error={workspace.error?.message}
+              data={activeWorkspace ? [activeWorkspace] : []}
               getRowKey={getId}
               columns={[
-                { key: 'host', header: 'Host' },
-                { key: 'username', header: 'Username' },
-                { key: 'expiresAt', header: 'Expiry', render: (row) => formatDate(row.expiresAt) },
+                { key: 'gpuModel', header: 'GPU', render: (row) => row.gpuModel || '-' },
+                {
+                  key: 'provider',
+                  header: 'Provider',
+                  render: (row) => formatWorkspaceProvider(row.provider),
+                },
+                {
+                  key: 'status',
+                  header: 'Status',
+                  render: (row) => {
+                    const status = getWorkspaceDisplayStatus(row);
+                    return <StatusBadge status={status} label={status} />;
+                  },
+                },
+                {
+                  key: 'expiryDate',
+                  header: 'Expiry',
+                  render: (row) => formatDate(row.expiryDate),
+                },
               ]}
             />
           </CardContent>
@@ -142,7 +169,7 @@ export function DashboardPage() {
         <CardContent className="space-y-4 p-5">
           <SectionHeader
             title="Recent Activity"
-            description="Latest enquiry and credential updates."
+            description="Latest enquiry and workspace updates."
           />
           {recentActivity.length ? (
             <div className="divide-y divide-slate-200 dark:divide-slate-800">
@@ -167,7 +194,7 @@ export function DashboardPage() {
             </div>
           ) : (
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              New enquiry and credential updates will appear here.
+              New enquiry and workspace updates will appear here.
             </p>
           )}
         </CardContent>
@@ -183,8 +210,8 @@ export function DashboardPage() {
             <Button asChild variant="outline" leftIcon={<ClipboardList className="h-4 w-4" />}>
               <Link to="/dashboard/enquiries">Track enquiries</Link>
             </Button>
-            <Button asChild variant="outline" leftIcon={<KeyRound className="h-4 w-4" />}>
-              <Link to="/dashboard/credentials">View credentials</Link>
+            <Button asChild variant="outline" leftIcon={<Workflow className="h-4 w-4" />}>
+              <Link to="/dashboard/workspace">Open workspace</Link>
             </Button>
           </div>
         </CardContent>

@@ -11,3 +11,9 @@ export {
   setListItemInCache,
 } from './mutation-helpers.js';
 export { useUpdateUser } from './user.mutations.js';
+export {
+  useCreateWorkspace,
+  useDeleteWorkspace,
+  useUpdateWorkspace,
+  useUpdateWorkspaceStatus,
+} from './workspace.mutations.js';

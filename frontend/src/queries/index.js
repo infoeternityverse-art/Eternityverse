@@ -9,3 +9,8 @@ export {
 } from './gpu-package.queries.js';
 export { queryKeys } from './query-keys.js';
 export { useUser, useUsers } from './user.queries.js';
+export {
+  useAdminWorkspace,
+  useAdminWorkspaces,
+  useCustomerWorkspace,
+} from './workspace.queries.js';

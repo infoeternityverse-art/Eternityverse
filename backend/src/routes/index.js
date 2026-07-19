@@ -6,6 +6,7 @@ import { customerCredentialRouter, adminCredentialRouter } from './credential.ro
 import { customerEnquiryRouter, adminEnquiryRouter, enquiryRouter } from './enquiry.routes.js';
 import { adminGpuPackageRouter, gpuPackageRouter } from './gpu-package.routes.js';
 import { userRouter } from './user.routes.js';
+import { adminWorkspaceRouter, customerWorkspaceRouter } from '../workspace/routes/index.js';
 
 export const apiRouter = Router();
 
@@ -19,3 +20,5 @@ apiRouter.use(`/api/${API_VERSION}/admin/enquiries`, adminEnquiryRouter);
 apiRouter.use(`/api/${API_VERSION}/customer/credentials`, customerCredentialRouter);
 apiRouter.use(`/api/${API_VERSION}/admin/credentials`, adminCredentialRouter);
 apiRouter.use(`/api/${API_VERSION}/admin/audit-logs`, auditLogRouter);
+apiRouter.use(`/api/${API_VERSION}/admin/workspaces`, adminWorkspaceRouter);
+apiRouter.use(`/api/${API_VERSION}/customer/workspace`, customerWorkspaceRouter);

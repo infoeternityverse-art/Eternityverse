@@ -45,6 +45,22 @@ const AdminEnquiryDetailPage = lazyPage(
   'AdminEnquiryDetailPage'
 );
 const AuditLogsPage = lazyPage(() => import('@/pages/admin/audit-logs-page.jsx'), 'AuditLogsPage');
+const WorkspacesPage = lazyPage(
+  () => import('@/pages/admin/workspaces-page.jsx'),
+  'WorkspacesPage'
+);
+const NewWorkspacePage = lazyPage(
+  () => import('@/pages/admin/new-workspace-page.jsx'),
+  'NewWorkspacePage'
+);
+const EditWorkspacePage = lazyPage(
+  () => import('@/pages/admin/edit-workspace-page.jsx'),
+  'EditWorkspacePage'
+);
+const WorkspaceDetailPage = lazyPage(
+  () => import('@/pages/admin/workspace-detail-page.jsx'),
+  'WorkspaceDetailPage'
+);
 const CustomerDetailPage = lazyPage(
   () => import('@/pages/admin/customer-detail-page.jsx'),
   'CustomerDetailPage'
@@ -79,6 +95,10 @@ const ResetPasswordPage = lazyPage(
 const CredentialsPage = lazyPage(
   () => import('@/pages/customer/credentials-page.jsx'),
   'CredentialsPage'
+);
+const WorkspacePage = lazyPage(
+  () => import('@/pages/customer/workspace-page.jsx'),
+  'WorkspacePage'
 );
 const DashboardPage = lazyPage(
   () => import('@/pages/customer/dashboard-page.jsx'),
@@ -153,6 +173,7 @@ export const router = createBrowserRouter(
         { index: true, element: withSuspense(DashboardPage) },
         { path: 'enquiries', element: withSuspense(EnquiriesPage) },
         { path: 'enquiries/:id', element: withSuspense(EnquiryDetailPage) },
+        { path: 'workspace', element: withSuspense(WorkspacePage) },
         { path: 'credentials', element: withSuspense(CredentialsPage) },
         { path: 'profile', element: withSuspense(ProfilePage) },
       ],
@@ -172,6 +193,10 @@ export const router = createBrowserRouter(
         { path: 'enquiries', element: withSuspense(AdminEnquiriesPage) },
         { path: 'enquiries/:id', element: withSuspense(AdminEnquiryDetailPage) },
         { path: 'credentials', element: withSuspense(AdminCredentialsPage) },
+        { path: 'workspaces', element: withSuspense(WorkspacesPage) },
+        { path: 'workspaces/new', element: withSuspense(NewWorkspacePage) },
+        { path: 'workspaces/:id', element: withSuspense(WorkspaceDetailPage) },
+        { path: 'workspaces/:id/edit', element: withSuspense(EditWorkspacePage) },
         { path: 'customers', element: withSuspense(CustomersPage) },
         { path: 'customers/:id', element: withSuspense(CustomerDetailPage) },
         { path: 'audit-logs', element: withSuspense(AuditLogsPage) },

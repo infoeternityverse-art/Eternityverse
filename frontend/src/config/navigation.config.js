@@ -6,12 +6,12 @@ import {
   FileClock,
   Gauge,
   Home,
-  KeyRound,
   LayoutDashboard,
   PackagePlus,
   ShieldCheck,
   User,
   Users,
+  Workflow,
 } from 'lucide-react';
 
 /**
@@ -29,7 +29,7 @@ export const authNavigation = [{ label: 'Login / Register', href: '/login' }];
 export const customerNavigation = [
   { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
   { label: 'Enquiries', href: '/dashboard/enquiries', icon: ClipboardList },
-  { label: 'Credentials', href: '/dashboard/credentials', icon: KeyRound },
+  { label: 'Workspace', href: '/dashboard/workspace', icon: Workflow },
   { label: 'Profile', href: '/dashboard/profile', icon: User },
 ];
 
@@ -37,7 +37,7 @@ export const adminNavigation = [
   { label: 'Overview', href: '/admin', icon: Gauge },
   { label: 'GPU Packages', href: '/admin/gpu-packages', icon: PackagePlus },
   { label: 'Enquiries', href: '/admin/enquiries', icon: ClipboardList },
-  { label: 'Credentials', href: '/admin/credentials', icon: KeyRound },
+  { label: 'Workspace Management', href: '/admin/workspaces', icon: Workflow },
   { label: 'Customers', href: '/admin/customers', icon: Users },
   { label: 'Audit Logs', href: '/admin/audit-logs', icon: FileClock },
 ];
@@ -65,7 +65,8 @@ export const breadcrumbLabels = {
   '/faq': 'FAQ',
   '/dashboard': 'Dashboard',
   '/dashboard/enquiries': 'Enquiries',
-  '/dashboard/credentials': 'Credentials',
+  '/dashboard/workspace': 'Workspace',
+  '/dashboard/credentials': 'Workspace',
   '/dashboard/profile': 'Profile',
   '/admin': 'Admin',
   '/admin/login': 'Admin Login',
@@ -73,6 +74,8 @@ export const breadcrumbLabels = {
   '/admin/gpu-packages/new': 'New Package',
   '/admin/enquiries': 'Enquiries',
   '/admin/credentials': 'Credentials',
+  '/admin/workspaces': 'Workspace Management',
+  '/admin/workspaces/new': 'New Workspace',
   '/admin/customers': 'Customers',
   '/admin/audit-logs': 'Audit Logs',
   '/403': 'Forbidden',
