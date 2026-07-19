@@ -4,6 +4,10 @@ export const config = {
   nodeEnv: loadEnv('NODE_ENV', 'development'),
   port: Number(loadEnv('PORT', 5000)),
   mongoUri: requireEnv('MONGO_URI'),
+  mongoDnsServers: loadEnv('MONGO_DNS_SERVERS', '')
+    .split(',')
+    .map((server) => server.trim())
+    .filter(Boolean),
   corsOrigin: loadEnv('CORS_ORIGIN', 'http://localhost:5173'),
   logLevel: loadEnv('LOG_LEVEL', 'info'),
   rateLimit: {
