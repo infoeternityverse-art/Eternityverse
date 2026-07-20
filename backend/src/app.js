@@ -39,6 +39,17 @@ if (config.nodeEnv !== 'test') {
   app.use(morgan(config.nodeEnv === 'production' ? 'combined' : 'dev'));
 }
 
+app.get('/', (_req, res) =>
+  res.status(200).json({
+    success: true,
+    message: 'EternityVerse backend running successfully.',
+    data: {
+      service: 'eternityverse-api',
+      environment: config.nodeEnv,
+    },
+  })
+);
+
 app.use(apiRouter);
 
 app.use(notFoundHandler);
