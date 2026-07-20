@@ -12,6 +12,11 @@ const adminNotificationEmails = [
   ...parseEmailList(loadEnv('ADMIN_EMAIL')),
 ];
 
+const smtpPort = Number(loadEnv('SMTP_PORT', 587));
+const smtpSecureEnv = loadEnv('SMTP_SECURE');
+const smtpSecure =
+  smtpSecureEnv === undefined ? smtpPort === 465 : String(smtpSecureEnv).trim().toLowerCase() === 'true';
+
 export const notificationConfig = {
   enabled: loadEnv('NOTIFICATIONS_ENABLED', 'true') === 'true',
   brandName: loadEnv('NOTIFICATION_BRAND_NAME', 'EternityVerse'),
@@ -22,15 +27,15 @@ export const notificationConfig = {
   adminNotificationEmails: [...new Set(adminNotificationEmails)],
   smtp: {
     host: loadEnv('SMTP_HOST'),
-    port: Number(loadEnv('SMTP_PORT', 587)),
+    port: smtpPort,
     user: loadEnv('SMTP_USER'),
     password: loadEnv('SMTP_PASSWORD'),
     fromName: loadEnv('SMTP_FROM_NAME', loadEnv('NOTIFICATION_BRAND_NAME', 'EternityVerse')),
     fromEmail: loadEnv('SMTP_FROM_EMAIL'),
-    secure: loadEnv('SMTP_SECURE', 'false') === 'true',
-    connectionTimeoutMs: Number(loadEnv('SMTP_CONNECTION_TIMEOUT_MS', 10000)),
-    greetingTimeoutMs: Number(loadEnv('SMTP_GREETING_TIMEOUT_MS', 10000)),
-    socketTimeoutMs: Number(loadEnv('SMTP_SOCKET_TIMEOUT_MS', 15000)),
+    secure: smtpSecure,
+    connectionTimeoutMs: Number(loadEnv('SMTP_CONNECTION_TIMEOUT_MS', 30000)),
+    greetingTimeoutMs: Number(loadEnv('SMTP_GREETING_TIMEOUT_MS', 30000)),
+    socketTimeoutMs: Number(loadEnv('SMTP_SOCKET_TIMEOUT_MS', 45000)),
   },
 };
 
