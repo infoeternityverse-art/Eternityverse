@@ -4,7 +4,7 @@ import { tokenStorage } from '@/utils/token-storage.js';
 
 export const apiClient = axios.create({
   baseURL: env.apiBaseUrl,
-  timeout: 15000,
+  timeout: env.apiTimeoutMs,
   headers: {
     'Content-Type': 'application/json',
   },

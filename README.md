@@ -24,6 +24,16 @@ cp backend/.env.example backend/.env
 
 Set strong production values for JWT secrets and `CREDENTIAL_ENCRYPTION_KEY` before deploying.
 
+Frontend environment variables:
+
+```bash
+VITE_API_BASE_URL=http://localhost:5000/api/v1
+VITE_API_TIMEOUT_MS=45000
+VITE_APP_NAME=EternityVerse
+VITE_APP_ENV=development
+VITE_SUPPORT_EMAIL=support@example.com
+```
+
 ## Scripts
 
 ```bash
