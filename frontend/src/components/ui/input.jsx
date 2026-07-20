@@ -68,7 +68,7 @@ export const Input = forwardRef(function Input(
             aria-label={showPassword ? 'Hide password' : 'Show password'}
             variant="icon"
             size="sm"
-            className="absolute right-1 top-1/2 -translate-y-1/2"
+            className="absolute right-2 top-1/2 h-8 w-8 -translate-y-1/2 rounded-full p-0"
             onClick={() => setShowPassword((value) => !value)}
             disabled={disabled || loading}
           >

@@ -57,6 +57,7 @@ SUPPORT_EMAIL=support@example.com
 APP_FRONTEND_URL=http://localhost:5173
 APP_DASHBOARD_URL=http://localhost:5173/dashboard
 APP_ADMIN_URL=http://localhost:5173/admin
+ADMIN_NOTIFICATION_EMAILS=admin@example.com
 SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=smtp-user
@@ -66,6 +67,11 @@ SMTP_FROM_EMAIL=no-reply@example.com
 SMTP_SECURE=false
 PASSWORD_RESET_EXPIRES_IN=30m
 ```
+
+In production, set the SMTP values in the hosting provider environment variables. `smtp.example.com`,
+`smtp-user`, and `smtp-password` are placeholders and will not deliver email. Admin enquiry
+notifications are sent to active admin users in MongoDB plus any comma-separated emails configured in
+`ADMIN_NOTIFICATION_EMAILS`.
 
 Notification triggers:
 

@@ -62,15 +62,16 @@ export function PublicLayout() {
               </Button>
             </div>
 
-            <Button
-              variant="icon"
-              className="lg:hidden"
-              aria-label={isMobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
-              aria-expanded={isMobileNavOpen}
-              onClick={() => setIsMobileNavOpen((current) => !current)}
-            >
-              {isMobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+            <div className="flex items-center gap-2 lg:hidden">
+              <Button
+                variant="icon"
+                aria-label={isMobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={isMobileNavOpen}
+                onClick={() => setIsMobileNavOpen((current) => !current)}
+              >
+                {isMobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
           </div>
 
           {isMobileNavOpen && (

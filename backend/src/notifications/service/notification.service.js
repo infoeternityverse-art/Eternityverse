@@ -1,4 +1,5 @@
 import { User, USER_ROLES } from '../../models/index.js';
+import { notificationConfig } from '../../config/notification.config.js';
 import { emailProvider } from '../providers/email.provider.js';
 import {
   adminNewEnquiryEmailTemplate,
@@ -137,12 +138,26 @@ class NotificationService {
   async sendNewEnquiryNotification({ enquiry, gpuPackage }) {
     await this.runSafely('admin.enquiry.created', async () => {
       const admins = await User.find({ role: USER_ROLES.ADMIN, isActive: true }).select('email');
+      const recipients = [
+        ...admins.map((admin) => admin.email),
+        ...notificationConfig.adminNotificationEmails,
+      ]
+        .map((email) => String(email || '').trim().toLowerCase())
+        .filter(Boolean);
+      const uniqueRecipients = [...new Set(recipients)];
+
+      if (!uniqueRecipients.length) {
+        console.warn(
+          `[notification] ${new Date().toISOString()} admin.enquiry.created skipped: no admin recipients`
+        );
+        return;
+      }
 
       await Promise.all(
-        admins.map((admin) =>
+        uniqueRecipients.map((recipient) =>
           this.sendEmail({
             type: 'admin.enquiry.created',
-            to: admin.email,
+            to: recipient,
             subject: 'New GPU rental enquiry received',
             html: adminNewEnquiryEmailTemplate({ enquiry, gpuPackage }),
             text: `New enquiry from ${enquiry.contactName} for ${

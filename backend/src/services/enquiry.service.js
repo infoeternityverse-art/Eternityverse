@@ -1,7 +1,10 @@
 import { Enquiry, USER_ROLES } from '../models/index.js';
 import { notificationService } from '../notifications/index.js';
+import { buildPaginationMeta, normalizePagination } from '../utils/pagination.js';
+import { buildFieldSelection } from '../utils/query-builder.js';
 import { NotFoundError } from '../utils/errors.js';
-import { buildServiceResponse } from '../utils/response-builder.js';
+import { buildListResponse, buildServiceResponse } from '../utils/response-builder.js';
+import { buildSort } from '../utils/sort-builder.js';
 import { BaseService } from './base.service.js';
 
 class EnquiryService extends BaseService {
@@ -57,13 +60,30 @@ class EnquiryService extends BaseService {
     return response;
   }
 
-  findForCustomer(customerId, options = {}) {
-    return this.findMany({
-      ...options,
-      filters: {
-        ...options.filters,
-        customer: customerId,
-      },
+  async findForCustomer(customer, options = {}) {
+    const { page, limit, skip } = normalizePagination(options);
+    const baseFilter = this.buildBaseFilter(options.filters);
+    const sort = buildSort(options, this.allowedSortFields);
+    const select = buildFieldSelection(options.fields, this.allowedSelectFields);
+    const ownershipFilter = {
+      $or: [{ customer: customer._id }, { contactEmail: customer.email }],
+    };
+    const filter =
+      Object.keys(baseFilter).length > 0 ? { $and: [baseFilter, ownershipFilter] } : ownershipFilter;
+
+    let query = Enquiry.find(filter).sort(sort).skip(skip).limit(limit);
+
+    if (select) {
+      query = query.select(select);
+    }
+
+    query = this.applyPopulate(query, options.populate);
+
+    const [records, total] = await Promise.all([query, Enquiry.countDocuments(filter)]);
+
+    return buildListResponse({
+      data: records,
+      meta: buildPaginationMeta({ page, limit, total }),
     });
   }
 
@@ -116,7 +136,10 @@ class EnquiryService extends BaseService {
       return this.findById(id, options);
     }
 
-    let query = Enquiry.findOne({ _id: id, customer: user._id });
+    let query = Enquiry.findOne({
+      _id: id,
+      $or: [{ customer: user._id }, { contactEmail: user.email }],
+    });
     query = this.applyPopulate(query, options.populate);
 
     const enquiry = await query;

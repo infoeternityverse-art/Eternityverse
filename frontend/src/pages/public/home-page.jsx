@@ -70,29 +70,38 @@ export function HomePage() {
           </div>
 
           <div className="relative z-10 [perspective:1400px]">
-            <div className="relative mx-auto max-w-4xl origin-center rotate-x-[7deg] rotate-y-[-12deg] rounded-[28px] border border-white/15 bg-[#050505] p-3 shadow-[0_34px_120px_rgba(0,0,0,0.72)] transition duration-500 hover:rotate-x-[4deg] hover:rotate-y-[-7deg]">
-              <div className="relative overflow-hidden rounded-[20px] border border-white/10 bg-black">
-                <video
-                  className="aspect-video h-full w-full object-cover"
-                  src="/media/hero-brand.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  aria-label="GPU cloud brand animation"
-                />
-                <div className="pointer-events-none absolute inset-0 border border-white/10" />
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="absolute bottom-4 right-4 min-w-40 bg-black/55 backdrop-blur-xl"
-                >
-                  <Link to="/gpus">Browse GPUs</Link>
-                </Button>
+            <div className="hero-visual-shell relative mx-auto -translate-y-8 flex min-h-[340px] max-w-2xl origin-center items-center justify-center overflow-visible p-6 transition duration-500 sm:min-h-[430px] lg:-translate-y-12">
+              <div className="hero-visual-grid" aria-hidden="true" />
+              <div
+                className="hero-visual-stage"
+                role="img"
+                aria-label="Animated GPU infrastructure visual"
+              >
+                <div className="hero-visual-network" aria-hidden="true">
+                  {Array.from({ length: 16 }).map((_, index) => (
+                    <span key={index} className="hero-network-node" />
+                  ))}
+                </div>
+                <div className="hero-visual-rings" aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <span key={index} />
+                  ))}
+                </div>
+                <div className="hero-visual-lightning" aria-hidden="true">
+                  {Array.from({ length: 9 }).map((_, index) => (
+                    <span key={index} />
+                  ))}
+                </div>
+                <div className="hero-visual-core">
+                  <div className="hero-visual-chip">
+                    <Cpu className="h-9 w-9 text-white" />
+                    <span>GPU</span>
+                  </div>
+                </div>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <span key={index} className="hero-visual-particle" />
+                ))}
               </div>
-              <div className="mx-auto mt-3 h-2 w-1/2 rounded-full bg-white/10" />
             </div>
           </div>
         </div>

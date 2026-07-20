@@ -22,7 +22,7 @@ export const getEnquiry = asyncHandler(async (req, res) => {
 
 export const listCustomerEnquiries = asyncHandler(async (req, res) => {
   const response = await enquiryService.findForCustomer(
-    req.user._id,
+    req.user,
     getQueryOptions(req.validated.query)
   );
 
