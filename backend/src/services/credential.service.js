@@ -38,7 +38,7 @@ class CredentialService extends BaseService {
       unwrap: true,
     });
 
-    await notificationService.sendCredentialIssued({
+    notificationService.sendCredentialIssued({
       credential,
       customer: credential.customer,
       gpuPackage: credential.gpuPackage,

@@ -48,11 +48,11 @@ class EnquiryService extends BaseService {
       unwrap: true,
     });
 
-    await notificationService.sendEnquiryReceived({
+    notificationService.sendEnquiryReceived({
       enquiry,
       gpuPackage: enquiry.gpuPackage,
     });
-    await notificationService.sendNewEnquiryNotification({
+    notificationService.sendNewEnquiryNotification({
       enquiry,
       gpuPackage: enquiry.gpuPackage,
     });
@@ -120,7 +120,7 @@ class EnquiryService extends BaseService {
         unwrap: true,
       });
 
-      await notificationService.sendEnquiryStatusUpdated({
+      notificationService.sendEnquiryStatusUpdated({
         enquiry: populatedEnquiry,
         gpuPackage: populatedEnquiry.gpuPackage,
       });

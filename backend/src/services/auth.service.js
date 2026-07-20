@@ -32,7 +32,7 @@ export const registerCustomer = async ({ name, email, password }) => {
     role: USER_ROLES.CUSTOMER,
   });
 
-  await notificationService.sendWelcomeEmail(user);
+  notificationService.sendWelcomeEmail(user);
 
   return buildAuthResponse(user);
 };
@@ -80,7 +80,7 @@ export const updateCurrentUser = async (user, payload) => {
   Object.assign(user, payload);
   await user.save();
 
-  await notificationService.sendProfileUpdated(user);
+  notificationService.sendProfileUpdated(user);
 
   return sanitizeUser(user);
 };
@@ -95,7 +95,7 @@ export const changeCurrentUserPassword = async (user, { currentPassword, newPass
   userWithPassword.passwordHash = await hashPassword(newPassword);
   await userWithPassword.save();
 
-  await notificationService.sendPasswordChanged(userWithPassword);
+  notificationService.sendPasswordChanged(userWithPassword);
 };
 
 export const requestPasswordReset = async ({ email }) => {
@@ -110,7 +110,7 @@ export const requestPasswordReset = async ({ email }) => {
     token
   )}&email=${encodeURIComponent(user.email)}`;
 
-  await notificationService.sendPasswordReset({
+  notificationService.sendPasswordReset({
     user,
     resetUrl,
     expiresIn: config.jwt.passwordResetExpiresIn,
@@ -137,5 +137,5 @@ export const resetPassword = async ({ email, token, password }) => {
   user.passwordHash = await hashPassword(password);
   await user.save();
 
-  await notificationService.sendPasswordChanged(user);
+  notificationService.sendPasswordChanged(user);
 };

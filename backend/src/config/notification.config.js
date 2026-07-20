@@ -28,6 +28,9 @@ export const notificationConfig = {
     fromName: loadEnv('SMTP_FROM_NAME', loadEnv('NOTIFICATION_BRAND_NAME', 'EternityVerse')),
     fromEmail: loadEnv('SMTP_FROM_EMAIL'),
     secure: loadEnv('SMTP_SECURE', 'false') === 'true',
+    connectionTimeoutMs: Number(loadEnv('SMTP_CONNECTION_TIMEOUT_MS', 10000)),
+    greetingTimeoutMs: Number(loadEnv('SMTP_GREETING_TIMEOUT_MS', 10000)),
+    socketTimeoutMs: Number(loadEnv('SMTP_SOCKET_TIMEOUT_MS', 15000)),
   },
 };
 

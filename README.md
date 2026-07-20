@@ -56,7 +56,7 @@ Phase 1 includes a reusable notification layer:
 Controller -> Business Service -> Notification Service -> Email Provider -> SMTP
 ```
 
-Controllers do not send email directly. Business services call `notificationService` after successful persistence, and every notification failure is logged without failing the original business operation. The provider currently uses Nodemailer over SMTP and can later be replaced or expanded with queue-backed Email, SMS, WhatsApp, Slack, Discord, or push providers.
+Controllers do not send email directly. Business services trigger `notificationService` after successful persistence, and notification delivery runs as best-effort background work so SMTP latency does not block API responses. Every notification failure is logged without failing the original business operation. The provider currently uses Nodemailer over SMTP and can later be replaced or expanded with queue-backed Email, SMS, WhatsApp, Slack, Discord, or push providers.
 
 Required SMTP variables live in `backend/.env`:
 
@@ -75,6 +75,9 @@ SMTP_PASSWORD=smtp-password
 SMTP_FROM_NAME=EternityVerse
 SMTP_FROM_EMAIL=no-reply@example.com
 SMTP_SECURE=false
+SMTP_CONNECTION_TIMEOUT_MS=10000
+SMTP_GREETING_TIMEOUT_MS=10000
+SMTP_SOCKET_TIMEOUT_MS=15000
 PASSWORD_RESET_EXPIRES_IN=30m
 ```
 

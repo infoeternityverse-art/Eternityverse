@@ -17,6 +17,9 @@ const getTransporter = () => {
         user: notificationConfig.smtp.user,
         pass: notificationConfig.smtp.password,
       },
+      connectionTimeout: notificationConfig.smtp.connectionTimeoutMs,
+      greetingTimeout: notificationConfig.smtp.greetingTimeoutMs,
+      socketTimeout: notificationConfig.smtp.socketTimeoutMs,
     });
   }
 
